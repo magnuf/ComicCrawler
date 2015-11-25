@@ -22,7 +22,7 @@ function callback(error, response, body) {
     var imgName = imgNameRegex.exec(imgUrl[1]);
     var prevImg = previousRegex.exec(body);
     request(imgUrl[1]).pipe(fs.createWriteStream("stripes/" + imgName[1]));
-    if(!prevImg[1]) { return; }
+    if(!prevImg) { return; }
     url = baseUrl + prevImg[1];
     options.url = url;
     request(options, callback);
