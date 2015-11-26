@@ -1,9 +1,8 @@
 var request = require("request");
 var fs = require("fs");
 var sessionid ='<SESSION ID FROM COMICS.IO>';
-var urls = ['/lunchdb/2015/11/18/', '/lunch/2013/6/28/', '/lunche24/2015/11/24/', '/lunchtu/2015/11/24/'];
+var urls = ['/lunchdb', '/lunch', '/lunche24', '/lunchtu'];
 var baseUrl = 'https://comics.io';
-
 
 for (var i = 0; i < urls.length; i++) {
   crawl(urls[i]);
@@ -19,21 +18,7 @@ function crawl(url) {
 
   var imgUrlregex = /<img src="(.*?)".*?alt="([^"]*?)"/;
   var previousRegex = /<a href="([^"]*?)" class="[^"]*?" id="prev"/;
-  var latestRegex = /<a href="([^"]*?)" class="[^"]*?" id="last"/;
   var extensionRegex = /.+\.([^?]+)(\?|$)/;
-
-  function findLatest(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var lastUrl = latestRegex.exec(body);
-      if(!lastUrl){
-        //already on latest
-      }
-      else {
-        options.url = baseUrl + lastUrl[1];
-      }
-      request(options, crawl);
-    }
-  }
 
   function crawl(error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -57,5 +42,5 @@ function crawl(url) {
     }
   }
 
-  request(options, findLatest);
+  request(options, crawl);
 }
